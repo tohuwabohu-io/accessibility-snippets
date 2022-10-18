@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Roving Tabindex - Tab Pane example</title>
+    <style>
+        .tab-pane {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tabbed > li {
+            float: left;
+            list-style: none;
+            width: 100px;
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        .tabbed > li > button {
+            width: 100%;
+            height: 100%;
+            font-size: 14pt;
+            background-color: white;
+        }
+
+        .active-tab {
+            border-bottom: 0;
+            background-color: aliceblue !important;
+        }
+    </style>
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', () => {
+            const buttons = Array
+                .from(document.querySelectorAll("ul[role='tablist'] > li > button"));
+
+            buttons.forEach(button => {
+                button.addEventListener('keydown', (e) => {
+                    console.log(e.key);
+
+                    if (e.key !== 'Tab' && e.key !== 'Enter') {
+                        e.preventDefault();
+                    }
+
+                    const tabs = Array
+                        .from(document.querySelectorAll("ul[role='tablist'] > li > button"));
+
+                    const thisIndex = tabs.indexOf(e.target);
+
+                    switch (e.key) {
+                        case 'ArrowLeft': {
+                            roveTabindex(tabs, thisIndex, -1);
+                        }
+                            break;
+                        case 'ArrowRight': {
+                            roveTabindex(tabs, thisIndex, 1);
+                        }
+                            break;
+                        default:
+                            return;
+                    }
+                });
+            });
+        });
+
+        const roveTabindex = (tabs, index, inc) => {
+            let nextIndex = index + inc;
+            if (nextIndex < 0) {
+
+                nextIndex = tabs.length - 1;
+            } else if (nextIndex >= tabs.length) {
+                nextIndex = 0;
+            }
+            console.log(`roving tabindex to index ${nextIndex}`);
+
+            tabs[index].setAttribute("tabindex", "-1");
+
+            tabs[nextIndex].setAttribute("tabindex", "0");
+
+            tabs[nextIndex].focus();
+        }
+
+        let selected = 1;
+
+        const selectTab = (tab, id) => {
+            const pane = document.querySelector(`div[id=pane${selected}]`);
+            const next = document.querySelector(`div[id=pane${id}]`);
+            const activeTab = document.querySelector('button[class=active-tab]');
+
+            pane.setAttribute("style", "display: none");
+            pane.setAttribute("aria-hidden", "true");
+
+            next.setAttribute("style", "display: block");
+            next.setAttribute("aria-hidden", "false");
+
+            activeTab.classList.remove('active-tab');
+            tab.classList.add('active-tab');
+
+            selected = id;
+        }
+    </script>
+</head>
+<body>
+<main>
+    <h1>Tab Pane</h1>
+    <div class="tab-pane">
+        <div>
+            <ul class="tabbed" role="tablist">
+                <li role="tab">
+                    <button onclick="selectTab(this, 1)" class="active-tab" tabindex="0">Tab 1</button>
+                </li>
+                <li role="tab">
+                    <button onclick="selectTab(this, 2)" tabindex="-1">Tab 2</button>
+                </li>
+                <li role="tab">
+                    <button onclick="selectTab(this, 3)" tabindex="-1">Tab 3</button>
+                </li>
+                <li role="tab">
+                    <button onclick="selectTab(this, 4)" tabindex="-1">Tab 4</button>
+                </li>
+            </ul>
+        </div>
+
+        <div>
+            <div id="pane1">
+                <h2>
+                    Content 1
+                </h2>
+                <form>
+                    <label for="name1">Name 1:</label>
+                    <input id="name1" type="text">
+                </form>
+            </div>
+
+            <div id="pane2" style="display: none" aria-hidden="true">
+                <h2>
+                    Content 2
+                </h2>
+                <form>
+                    <label for="name2">Name 2:</label>
+                    <input id="name2" type="text">
+                </form>
+            </div>
+
+            <div id="pane3" style="display: none" aria-hidden="true">
+                <h2>
+                    Content 3
+                </h2>
+                <form>
+                    <label for="name3">Name 3:</label>
+                    <input id="name3" type="text">
+                </form>
+            </div>
+
+            <div id="pane4" style="display: none" aria-hidden="true">
+                <h2>
+                    Content 4
+                </h2>
+                <form>
+                    <label for="name4">Name 4:</label>
+                    <input id="name4" type="text">
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>
