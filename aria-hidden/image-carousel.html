@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>aria-hidden - Image carousel example</title>
+    <style>
+        .carousel-container {
+            display: grid;
+            grid-template-columns: auto auto auto;
+            gap: 1em;
+            max-width: 800px;
+        }
+
+        .carousel-left-arrow > button {
+            width: 100%;
+            height: 100%;
+        }
+
+        .carousel-right-arrow > button {
+            width: 100%;
+            height: 100%;
+        }
+
+        .carousel-center {
+            justify-self: center;
+        }
+
+        .carousel-item {
+            text-align: center;
+        }
+    </style>
+    <script type="text/javascript">
+        const min = 1, max = 5;
+        let current = 1;
+
+        const showNext = (inc) => {
+            const item = document.querySelector(`div[id=item${current}]`);
+
+            let next = current + inc;
+
+            if (next < min) {
+                next = min;
+            } else if (next > max) {
+                next = max;
+            }
+
+            const nextItem = document.querySelector(`div[id=item${next}]`);
+
+            item.setAttribute("style", "display: none");
+            item.setAttribute("aria-hidden", "true");
+
+            nextItem.setAttribute("style", "display: block");
+            nextItem.setAttribute("aria-hidden", "false");
+
+            current = next;
+        }
+    </script>
+</head>
+<body>
+<main>
+    <h1>Cat Carousel</h1>
+    <div class="carousel-container">
+        <div class="carousel-left-arrow">
+            <button onclick="showNext(-1)" aria-label="Show previous">
+                <
+            </button>
+        </div>
+        <div class="carousel-center">
+            <div class="carousel-item" id="item1">
+                <h2>1/5</h2>
+                <img src="assets/cat1.jpg" alt="Jimmy the cat likes to look stupid.">
+
+                <p>Caption 1</p>
+                <a href="#">Adopt cat 1</a>
+            </div>
+            <div class="carousel-item" id="item2" style="display: none" aria-hidden="true">
+                <h2>2/5</h2>
+                <img src="assets/cat2.jpg" alt="Carol is a cat older than time.">
+
+                <p>Caption 2</p>
+                <a href="#">Adopt cat 2</a>
+            </div>
+            <div class="carousel-item" id="item3" style="display: none" aria-hidden="true">
+                <h2>3/5</h2>
+                <img src="assets/cat3.jpg" alt="Humphrey just woke up from his afternoon cat nap.">
+
+                <p>Caption 3</p>
+                <a href="#">Adopt cat 3</a>
+            </div>
+            <div class="carousel-item" id="item4" style="display: none" aria-hidden="true">
+                <h2>4/5</h2>
+                <img src="assets/cat4.jpg" alt="Speedy has a fur as majestic as a lion's.">
+
+                <p>Caption 4</p>
+                <a href="#">Adopt cat 4</a>
+            </div>
+            <div class="carousel-item" id="item5" style="display: none" aria-hidden="true">
+                <h2>5/5</h2>
+                <img src="assets/cat5.jpg" alt="MacBeth is a kitten that is afraid of baths.">
+
+                <p>Caption 5</p>
+                <a href="#">Adopt cat 5</a>
+            </div>
+        </div>
+        <div class="carousel-right-arrow">
+            <button onclick="showNext(1)" aria-label="Show next">
+                >
+            </button>
+        </div>
+    </div>
+</main>
+</body>
+</html>
