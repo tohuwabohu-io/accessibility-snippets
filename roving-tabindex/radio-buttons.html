@@ -9,7 +9,7 @@
             const group = Array.from(document.querySelectorAll("input[name='favFood']"));
 
             group.forEach(radio => {
-                radio.addEventListener("keydown", (e) => {
+                radio.addEventListener('keydown', (e) => {
                     console.log(e.key);
 
                     if (e.key !== 'Tab') {
@@ -49,11 +49,11 @@
 
             console.log(`roving tabindex to index ${nextIndex}`);
 
-            radios[index].setAttribute("tabindex", "-1");
-            radios[index].setAttribute("checked", "false");
+            radios[index].setAttribute('tabindex', '-1');
+            radios[index].setAttribute('checked', 'false');
 
-            radios[nextIndex].setAttribute("tabindex", "0");
-            radios[nextIndex].setAttribute("checked", "checked");
+            radios[nextIndex].setAttribute('tabindex', '0');
+            radios[nextIndex].setAttribute('checked', 'checked');
 
             radios[nextIndex].focus();
         }
