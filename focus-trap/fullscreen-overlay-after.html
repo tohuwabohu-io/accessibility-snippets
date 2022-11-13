@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Focus Trap - Fullscreen Overlay example</title>
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', () => {
+            const focusableElements = Array.from(document
+                .querySelectorAll('div[class=cookie-selection-controls] > input, div[class=cookie-button-container] > button'));
+
+            const first = focusableElements[0];
+            const last = focusableElements[focusableElements.length - 1];
+
+            document.addEventListener('keydown', (e) => {
+                const overlay = document.querySelector('div[id=modal-window]');
+
+                if (overlay && overlay.classList.contains('modal') && e.key === 'Tab') {
+                    if (!focusableElements.includes(e.target)) {
+                        trap(e, first);
+                    } else if (e.target === last && !e.shiftKey) {
+                        trap(e, first);
+                    } else if (e.target === first && e.shiftKey) {
+                        trap(e, last);
+                    }
+                }
+            });
+        });
+
+        const trap = (e, element) => {
+            e.preventDefault();
+            element.focus();
+        }
+
+        const hideOverlay = (hide) => {
+            const overlay = document.querySelector('div[id=modal-window]');
+
+            if (hide === true) {
+                overlay.setAttribute('aria-hidden', 'true');
+
+                overlay.classList.remove('modal');
+            } else {
+                overlay.setAttribute('aria-hidden', 'false');
+
+                overlay.classList.add('modal');
+            }
+        }
+    </script>
+    <style>
+        .cookie-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+            background-color: rgba(255, 255, 255, 0.70);
+            display: none;
+        }
+
+        .modal {
+            display: flex;
+            align-items: center;
+        }
+
+        .cookie-popup {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-content: center;
+            border-radius: 10px;
+            border: 1px solid black;
+            padding: 1em;
+            margin: auto;
+            gap: 1em;
+            max-width: 500px;
+            background-color: #fff;
+        }
+
+        .cookie-selection-controls {
+            display: grid;
+            grid-template-columns: 2em auto;
+            gap: 1em;
+        }
+
+        .cookie-button-container {
+            display: flex;
+            flex-direction: row;
+            gap: 1em;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: auto auto;
+            max-width: 600px;
+            gap: 1em;
+        }
+
+        .form-submit {
+            margin: 1em;
+        }
+
+        button {
+            border-radius: 5px;
+            border: 1px solid black;
+            padding: 0.25em;
+            font-size: 1em;
+            background: white;
+        }
+
+        .accept {
+            background: #3584e4;
+        }
+    </style>
+</head>
+<body>
+    <div id="modal-window" class="cookie-overlay modal" aria-modal="true">
+        <div class="cookie-popup">
+            <div class="cookie-info-container">
+                <h2>Cookies 🍪</h2>
+                <p>
+                    Very important information in regard to whom you will sell your soul to.
+                </p>
+                <p>
+                    Allow or Prohibit:
+                </p>
+                <div class="cookie-selection-controls">
+                    <input id="technical" type="checkbox" checked>
+                    <label for="technical">Technical Cookies</label>
+                    <input id="analytical" type="checkbox" checked>
+                    <label for="analytical">Analytical Cookies</label>
+                    <input id="thirdParty" type="checkbox" checked>
+                    <label for="thirdParty">3rd Party Cookies</label>
+                </div>
+            </div>
+            <div class="cookie-button-container">
+                <button class="accept" onclick="hideOverlay(true)">
+                    Accept
+                </button>
+                <button onclick="hideOverlay(true)">
+                    Decline
+                </button>
+            </div>
+        </div>
+    </div>
+    <main>
+        <section>
+            <h1>Very cool website that needs cookies</h1>
+            <p>
+                Our quality content mainly consists of cats in various poses.
+            </p>
+            <a href="#">Here is a link that would get focused if the focus trap would not exist.</a>
+            <p>
+                Also dogs that sniff each other's butts are seen here.
+            </p>
+            <a href="#">Here is another link that would get focused if the focus trap would not exist.</a>
+            <p>
+                Have you ever watched a cockatoo solving a Rubik's cube? We neither.
+            </p>
+            <a href="#">Here is yet another link that would get focused if the focus trap would not exist.</a>
+        </section>
+
+        <section>
+            <h2>
+                Input form
+            </h2>
+            <p>
+                Very important controls, but you need to confirm your cookie choice first.
+            </p>
+
+            <form>
+                <div class="form-grid">
+                    <label for="name">Name: </label>
+                    <input id="name" type="text">
+                    <label for="surname">Surname:</label>
+                    <input id="surname" type="text">
+                    <label for="sex">Sex:</label>
+                    <select id="sex">
+                        <option>No thanks</option>
+                        <option>Yes</option>
+                    </select>
+                    <label for="email">E-Mail-Address:</label>
+                    <input id="email" type="email">
+                    <span>I am interested in:</span>
+                    <div>
+                        <input id="cats" type="checkbox">
+                        <label for="cats">Cats</label>
+                        <input id="dogs" type="checkbox">
+                        <label for="dogs">Dogs</label>
+                        <input id="cockatoos" type="checkbox">
+                        <label for="cockatoos">Cockatoos</label>
+                    </div>
+                </div>
+
+                <div class="form-submit">
+                    <input type="submit" value="Submit">
+                </div>
+            </form>
+        </section>
+
+        <section>
+            <p>
+                Click here to re-run:
+            </p>
+            <a href="#" onclick="hideOverlay(false)">Show Cookie Banner</a>
+        </section>
+    </main>
+</body>
+</html>
