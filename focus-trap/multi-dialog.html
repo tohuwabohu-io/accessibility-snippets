@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Focus Trap - Multiple Dialogs example</title>
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', () => {
+            const focusableElements = Array.from(document
+                .querySelectorAll('div[class~=popup-controls] > input, div[class=popup-button-container] > button'));
+
+            const elementsByDialog = new Map();
+
+            focusableElements.forEach(element => {
+                scrape(element, elementsByDialog);
+            });
+
+            document.addEventListener('keydown', (e) => {
+                const overlay = document.querySelector('dialog.popup-overlay.modal');
+
+                // focus trap is inactive
+                if (!overlay) {
+                    return;
+                }
+
+                const dialogElements = elementsByDialog.get(overlay);
+
+                const first = dialogElements[0];
+                const last = dialogElements[dialogElements.length - 1];
+
+                if (overlay && e.key === 'Tab') {
+                    if (!dialogElements.includes(e.target)) {
+                        trap(e, first);
+                    } else if (e.target === last && !e.shiftKey) {
+                        trap(e, first);
+                    } else if (e.target === first && e.shiftKey) {
+                        trap(e, last);
+                    }
+                }
+            });
+        });
+
+        const scrape = (element, map) => {
+            const key = element.closest('dialog');
+            let value = map.get(key);
+
+            if (!value) {
+                value = [];
+            }
+
+            value.push(element);
+
+            map.set(key, value);
+        }
+
+        const trap = (e, element) => {
+            e.preventDefault();
+            element.focus();
+        }
+
+        const hideOverlay = (hide, id) => {
+            const overlay = document.querySelector(`dialog[id=${id}]`);
+
+            if (hide === true) {
+                overlay.setAttribute('aria-hidden', 'true');
+
+                overlay.classList.remove('modal');
+            } else {
+                overlay.setAttribute('aria-hidden', 'false');
+
+                overlay.classList.add('modal');
+            }
+        }
+    </script>
+    <style>
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+            background-color: rgba(255, 255, 255, 0.70);
+            display: none;
+        }
+
+        .modal {
+            display: flex;
+            align-items: center;
+        }
+
+        .popup {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-content: center;
+            border-radius: 10px;
+            border: 1px solid black;
+            padding: 1em;
+            margin: auto;
+            gap: 1em;
+            max-width: 500px;
+            background-color: #fff;
+        }
+
+        .popup-controls {
+            display: grid;
+            gap: 1em;
+        }
+
+        .popup-controls-checkboxes {
+            grid-template-columns: 2em auto;
+        }
+
+        .popup-button-container {
+            display: flex;
+            flex-direction: row;
+            gap: 1em;
+        }
+
+        button {
+            border-radius: 5px;
+            border: 1px solid black;
+            padding: 0.25em;
+            font-size: 1em;
+            background: white;
+        }
+
+        .accept {
+            background: #3584e4;
+        }
+    </style>
+</head>
+<body>
+    <dialog id="cookie-banner" class="popup-overlay modal" aria-modal="true">
+        <div class="popup">
+            <div>
+                <h2>Cookies 🍪</h2>
+                <p>
+                    Very important information in regard to whom you will sell your soul to.
+                </p>
+                <p>
+                    Allow or Prohibit:
+                </p>
+                <div class="popup-controls popup-controls-checkboxes">
+                    <input id="technical" type="checkbox" checked>
+                    <label for="technical">Technical Cookies</label>
+                    <input id="analytical" type="checkbox" checked>
+                    <label for="analytical">Analytical Cookies</label>
+                    <input id="thirdParty" type="checkbox" checked>
+                    <label for="thirdParty">3rd Party Cookies</label>
+                </div>
+            </div>
+            <div class="popup-button-container">
+                <button class="accept" onclick="hideOverlay(true, 'cookie-banner')">
+                    Accept
+                </button>
+                <button onclick="hideOverlay(true, 'cookie-banner')">
+                    Decline
+                </button>
+            </div>
+        </div>
+    </dialog>
+    <dialog id="confirmation-dialog" class="popup-overlay" aria-modal="true" aria-hidden="true">
+        <div class="popup">
+            <div>
+                <h2>Confirmation</h2>
+                <p>Are you sure?</p>
+            </div>
+            <div class="popup-button-container">
+                <button class="accept" onclick="hideOverlay(true, 'confirmation-dialog')">
+                    Yes
+                </button>
+                <button onclick="hideOverlay(true, 'confirmation-dialog')">
+                    No
+                </button>
+            </div>
+        </div>
+    </dialog>
+    <dialog id="password-prompt" class="popup-overlay" aria-modal="true" aria-hidden="true">
+        <div class="popup">
+            <div>
+                <h2>Login</h2>
+                <p>Please provide your credentials.</p>
+            </div>
+            <div class="popup-controls">
+                <label for="username">Username:</label>
+                <input id="username" type="text">
+                <label for="password">Password:</label>
+                <input id="password" type="password">
+            </div>
+            <div class="popup-button-container">
+                <button class="accept" onclick="hideOverlay(true, 'password-prompt')">
+                    Login
+                </button>
+                <button onclick="hideOverlay(true, 'password-prompt')">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </dialog>
+    <main>
+        <section>
+            <h1>Very cool website that needs cookies</h1>
+            <p>
+                Our quality content mainly consists of cats in various poses.
+            </p>
+            <a href="#">Here is a link that would get focused if the focus trap would not exist.</a>
+            <p>
+                Also dogs that sniff each other's butts are seen here.
+            </p>
+            <a href="#">Here is another link that would get focused if the focus trap would not exist.</a>
+            <p>
+                Have you ever watched a cockatoo solving a Rubik's cube? We neither.
+            </p>
+            <a href="#">Here is yet another link that would get focused if the focus trap would not exist.</a>
+        </section>
+
+        <section>
+            <p>
+                Password prompt:
+            </p>
+            <a href="#" onclick="hideOverlay(false, 'password-prompt')">Open</a>
+
+            <p>
+                Confirmation dialog:
+            </p>
+            <a href="#" onclick="hideOverlay(false, 'confirmation-dialog')">Open</a>
+        </section>
+
+        <section>
+            <p>
+                Click here to re-run:
+            </p>
+            <a href="#" onclick="hideOverlay(false, 'cookie-banner')">Show Cookie Banner</a>
+        </section>
+    </main>
+</body>
+</html>
