@@ -12,9 +12,9 @@
             const last = focusableElements[focusableElements.length - 1];
 
             document.addEventListener('keydown', (e) => {
-                const overlay = document.querySelector('dialog[id=modal-window]');
+                const overlay = document.querySelector('dialog.popup-overlay.modal');
 
-                if (overlay && overlay.classList.contains('modal') && e.key === 'Tab') {
+                if (overlay && e.key === 'Tab') {
                     if (!focusableElements.includes(e.target)) {
                         trap(e, first);
                     } else if (e.target === last && !e.shiftKey) {
