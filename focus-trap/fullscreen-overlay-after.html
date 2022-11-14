@@ -6,13 +6,13 @@
     <script type="text/javascript">
         document.addEventListener('DOMContentLoaded', () => {
             const focusableElements = Array.from(document
-                .querySelectorAll('div[class=cookie-selection-controls] > input, div[class=cookie-button-container] > button'));
+                .querySelectorAll('div[class=popup-controls] > input, div[class=popup-button-container] > button'));
 
             const first = focusableElements[0];
             const last = focusableElements[focusableElements.length - 1];
 
             document.addEventListener('keydown', (e) => {
-                const overlay = document.querySelector('div[id=modal-window]');
+                const overlay = document.querySelector('dialog[id=modal-window]');
 
                 if (overlay && overlay.classList.contains('modal') && e.key === 'Tab') {
                     if (!focusableElements.includes(e.target)) {
@@ -32,7 +32,7 @@
         }
 
         const hideOverlay = (hide) => {
-            const overlay = document.querySelector('div[id=modal-window]');
+            const overlay = document.querySelector('dialog[id=modal-window]');
 
             if (hide === true) {
                 overlay.setAttribute('aria-hidden', 'true');
@@ -46,7 +46,7 @@
         }
     </script>
     <style>
-        .cookie-overlay {
+        .popup-overlay {
             position: fixed;
             top: 0;
             left: 0;
@@ -62,7 +62,7 @@
             align-items: center;
         }
 
-        .cookie-popup {
+        .popup {
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -76,13 +76,13 @@
             background-color: #fff;
         }
 
-        .cookie-selection-controls {
+        .popup-controls {
             display: grid;
             grid-template-columns: 2em auto;
             gap: 1em;
         }
 
-        .cookie-button-container {
+        .popup-button-container {
             display: flex;
             flex-direction: row;
             gap: 1em;

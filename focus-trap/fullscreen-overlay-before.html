@@ -5,7 +5,7 @@
     <title>Focus Trap - Fullscreen Overlay example</title>
     <script type="text/javascript">
         const hideOverlay = (hide) => {
-            const overlay = document.querySelector('div[id=modal-window]');
+            const overlay = document.querySelector('dialog[id=modal-window]');
 
             if (hide === true) {
                 overlay.setAttribute('aria-hidden', 'true');
@@ -19,7 +19,7 @@
         }
     </script>
     <style>
-        .cookie-overlay {
+        .popup-overlay {
             position: fixed;
             top: 0;
             left: 0;
@@ -35,7 +35,7 @@
             align-items: center;
         }
 
-        .cookie-popup {
+        .popup {
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -49,13 +49,16 @@
             background-color: #fff;
         }
 
-        .cookie-selection-controls {
+        .popup-controls {
             display: grid;
-            grid-template-columns: 2em auto;
             gap: 1em;
         }
 
-        .cookie-button-container {
+        .popup-controls-checkboxes {
+            grid-template-columns: 2em auto;
+        }
+
+        .popup-button-container {
             display: flex;
             flex-direction: row;
             gap: 1em;
@@ -86,8 +89,8 @@
     </style>
 </head>
 <body>
-    <div id="modal-window" class="cookie-overlay modal" aria-modal="true">
-        <div class="cookie-popup">
+    <dialog id="modal-window" class="popup-overlay modal" aria-modal="true">
+        <div class="popup">
             <div class="cookie-info-container">
                 <h2>Cookies 🍪</h2>
                 <p>
@@ -96,7 +99,7 @@
                 <p>
                     Allow or Prohibit:
                 </p>
-                <div class="cookie-selection-controls">
+                <div class="popup-controls">
                     <input id="technical" type="checkbox" checked>
                     <label for="technical">Technical Cookies</label>
                     <input id="analytical" type="checkbox" checked>
@@ -105,7 +108,7 @@
                     <label for="thirdParty">3rd Party Cookies</label>
                 </div>
             </div>
-            <div class="cookie-button-container">
+            <div class="popup-button-container">
                 <button class="accept" onclick="hideOverlay(true)">
                     Accept
                 </button>
@@ -114,7 +117,7 @@
                 </button>
             </div>
         </div>
-    </div>
+    </dialog>
     <main>
         <section>
             <h1>Very cool website that needs cookies</h1>
