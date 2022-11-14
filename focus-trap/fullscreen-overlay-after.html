@@ -6,7 +6,7 @@
     <script type="text/javascript">
         document.addEventListener('DOMContentLoaded', () => {
             const focusableElements = Array.from(document
-                .querySelectorAll('div[class=popup-controls] > input, div[class=popup-button-container] > button'));
+                .querySelectorAll('div[class~=popup-controls] > input, div[class=popup-button-container] > button'));
 
             const first = focusableElements[0];
             const last = focusableElements[focusableElements.length - 1];
@@ -113,9 +113,9 @@
     </style>
 </head>
 <body>
-    <dialog id="modal-window" class="cookie-overlay modal" aria-modal="true">
-        <div class="cookie-popup">
-            <div class="cookie-info-container">
+    <dialog id="modal-window" class="popup-overlay modal" aria-modal="true">
+        <div class="popup">
+            <div>
                 <h2>Cookies 🍪</h2>
                 <p>
                     Very important information in regard to whom you will sell your soul to.
@@ -123,7 +123,7 @@
                 <p>
                     Allow or Prohibit:
                 </p>
-                <div class="cookie-selection-controls">
+                <div class="popup-controls">
                     <input id="technical" type="checkbox" checked>
                     <label for="technical">Technical Cookies</label>
                     <input id="analytical" type="checkbox" checked>
@@ -132,7 +132,7 @@
                     <label for="thirdParty">3rd Party Cookies</label>
                 </div>
             </div>
-            <div class="cookie-button-container">
+            <div class="popup-button-container">
                 <button class="accept" onclick="hideOverlay(true)">
                     Accept
                 </button>
