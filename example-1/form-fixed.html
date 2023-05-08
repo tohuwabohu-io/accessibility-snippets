@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link href="../common-assets/fontawesome/css/fontawesome.min.css" rel="stylesheet">
+  <link href="../common-assets/fontawesome/css/brands.min.css" rel="stylesheet">
+  <link href="../common-assets/fontawesome/css/solid.min.css" rel="stylesheet">
+  <title>Classic Form</title>
+  <style>
+    .form-grid {
+      display: grid;
+      grid-template-columns: auto auto;
+      max-width: 600px;
+      gap: 1em;
+    }
+
+    .form-submit {
+      margin: 1em;
+    }
+
+    a {
+      color: #0050ff;
+    }
+
+    button {
+      border-radius: 5px;
+      border: 1px solid black;
+      padding: 0.25em;
+      font-size: 1em;
+      background: white;
+    }
+  </style>
+</head>
+<body>
+<main>
+  <section>
+    <h1>Very cool website</h1>
+    <p>
+      Our quality content mainly consists of cats in various poses.
+    </p>
+    <a href="#" aria-label="Open mobile menu">
+      <i class="fa fa-burger" aria-hidden="true"></i>
+    </a>
+    <p>
+      Also dogs that sniff each other's butts are seen here.
+    </p>
+    <p>
+      Have you ever watched a cockatoo solving a Rubik's cube? We neither.
+    </p>
+  </section>
+
+  <section>
+    <h2>
+      Input form
+    </h2>
+    <p>
+      Very important controls, but you need to confirm your cookie choice first.
+    </p>
+
+    <form>
+      <div class="form-grid">
+        <label for="name">Name: </label>
+        <input id="name" type="text">
+        <label for="surname">Surname:</label>
+        <input id="surname" type="text">
+        <label for="newsletter">Newsletter</label>
+        <select id="newsletter">
+          <option>No thanks</option>
+          <option>Yes</option>
+        </select>
+        <label for="email">E-Mail-Address:</label>
+        <input id="email" type="email">
+        <span>I am interested in:</span>
+        <div>
+          <input id="cats" type="checkbox">
+          <label for="cats">Cats</label>
+          <input id="dogs" type="checkbox">
+          <label for="dogs">Dogs</label>
+          <input id="cockatoos" type="checkbox">
+          <label for="cockatoos">Cockatoos</label>
+        </div>
+      </div>
+
+      <div class="form-submit">
+        <button aria-label="Submit">
+          <i class="fa fa-check-circle"></i>
+        </button>
+      </div>
+    </form>
+  </section>
+
+  <section>
+    <img src="assets/cat5.jpg" alt="Jeffray has troubles seeing straight.">
+  </section>
+</main>
+</body>
+</html>

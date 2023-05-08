@@ -17,6 +17,10 @@
                 overlay.classList.add('modal');
             }
         }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => hideOverlay(false), 5000);
+        });
     </script>
     <style>
         .popup-overlay {
@@ -89,7 +93,7 @@
     </style>
 </head>
 <body>
-    <dialog id="modal-window" class="popup-overlay modal" aria-modal="true">
+    <dialog id="modal-window" class="popup-overlay">
         <div class="popup">
             <div class="cookie-info-container">
                 <h2>Cookies 🍪</h2>

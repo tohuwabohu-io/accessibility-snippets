@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Roving Tabindex - Menu example</title>
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', () => {
+           const links = Array
+               .from(document.querySelectorAll("ul[role=menu] > li > a"));
+
+           links.forEach(link => {
+               link.addEventListener('keydown', (e) => {
+                   console.log(e.key);
+
+                   if (e.key !== 'Tab' && e.key !== 'Enter') {
+                       e.preventDefault();
+                   }
+
+                   const menu = Array
+                       .from(document.querySelectorAll("ul[role=menu] > li > a"));
+
+                   const thisIndex = menu.indexOf(e.target);
+
+                   switch (e.key) {
+                       case 'ArrowUp': {
+                           roveTabindex(menu, thisIndex, -1);
+                       }
+                           break;
+                       case 'ArrowDown': {
+                           roveTabindex(menu, thisIndex, 1);
+                       }
+                           break;
+                       default:
+                           return;
+                   }
+               });
+           });
+        });
+
+        const roveTabindex = (menu, index, inc) => {
+            let nextIndex = index + inc;
+
+            if (nextIndex < 0) {
+                nextIndex = menu.length - 1;
+            } else if (nextIndex >= menu.length) {
+                nextIndex = 0;
+            }
+
+            console.log(`roving tabindex to index ${nextIndex}`);
+
+            menu[index].setAttribute("tabindex", "-1");
+
+            menu[nextIndex].setAttribute("tabindex", "0");
+            menu[nextIndex].focus();
+        }
+    </script>
+</head>
+<body>
+<main>
+    <h1>Awesome Website</h1>
+
+    <div>
+        <h2>Navigation</h2>
+
+        <ul role="menu">
+            <li role="menuitem">
+                <a href="#" tabindex="0">Home</a>
+            </li>
+            <li role="menuitem">
+                <a href="#" tabindex="-1">Archive</a>
+            </li>
+            <li role="menuitem">
+                <a href="#" tabindex="-1">Search</a>
+            </li>
+            <li role="menuitem">
+                <a href="#" tabindex="-1">About</a>
+            </li>
+            <li role="menuitem">
+                <a href="#" tabindex="-1">Imprint</a>
+            </li>
+            <li role="menuitem">
+                <a href="#" tabindex="-1">Twitter</a>
+            </li>
+            <li role="menuitem">
+                <a href="#" tabindex="-1">GitHub</a>
+            </li>
+        </ul>
+    </div>
+
+    <div>
+        <h2>Content</h2>
+        <label for="name">Name:</label>
+        <input id="name" type="text">
+    </div>
+</main>
+</body>
+</html>
